@@ -18,16 +18,12 @@ sudo echo "server {
 
 	location / {
 		add_header Access-Control-Allow-Origin \"http://$3\";
-		try_files \$uri \$uri/ \$uri.$1?\$query_string;
+		try_files \$uri \$uri/ /index.$1?\$query_string;
 
 			proxy_connect_timeout 6000s;
     		proxy_read_timeout    6000s;
     		proxy_send_timeout    6000s;
         }
-	
-	location /reply/ {
-       		 rewrite ^/reply/id/(\d+)$ /reply?id=\$1 last;
-   	}
 
 	location /app/ {
 		proxy_pass http://localhost:6001;
@@ -40,7 +36,7 @@ sudo echo "server {
 
 	location ~ \.php$ {
 		# With php-fpm unix sockets
-		fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
 		include         fastcgi_params;
 		fastcgi_param   SCRIPT_FILENAME    \$document_root\$fastcgi_script_name;
 		fastcgi_param   SCRIPT_NAME        \$fastcgi_script_name;
